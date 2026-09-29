@@ -47,11 +47,12 @@ export default function CartSheet({ open, onClose, cart, tableNumber, submitting
       <form
         onSubmit={submit}
         onClick={(e) => e.stopPropagation()}
-        className="flex max-h-[92vh] w-full max-w-lg flex-col rounded-t-3xl bg-cream"
+        className="flex max-h-[92vh] w-full max-w-lg animate-fade-up flex-col rounded-t-[28px] bg-cream"
       >
-        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+        <div className="mx-auto mt-2.5 h-1 w-10 rounded-full bg-gray-300" />
+        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3.5">
           <div>
-            <h2 className="text-base font-bold text-gray-900">Pesanan Anda</h2>
+            <h2 className="font-display text-xl text-gray-900">Pesanan Anda</h2>
             <p className="text-xs text-gray-500">Meja {tableNumber}</p>
           </div>
           <button type="button" onClick={onClose} aria-label="Tutup" className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
@@ -62,7 +63,7 @@ export default function CartSheet({ open, onClose, cart, tableNumber, submitting
         <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
           <div className="space-y-3">
             {cart.list.map((it) => (
-              <div key={it.k} className="rounded-2xl bg-white p-3 shadow-soft">
+              <div key={it.k} className="rounded-2xl bg-white p-3 shadow-soft ring-1 ring-black/[.03]">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-900">{it.name}</p>
@@ -139,7 +140,7 @@ export default function CartSheet({ open, onClose, cart, tableNumber, submitting
             <span className="text-sm text-gray-500">Total</span>
             <span className="text-lg font-bold text-gray-900">{formatRupiah(cart.total)}</span>
           </div>
-          <button type="submit" disabled={submitting || cart.list.length === 0} className="btn-primary w-full">
+          <button type="submit" disabled={submitting || cart.list.length === 0} className="btn-primary w-full !rounded-full !py-3.5 text-base">
             {submitting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" /> Mengirim...

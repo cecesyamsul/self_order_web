@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag, Armchair, X } from "lucide-react";
 import { isConfigured } from "./lib/supabase";
 import { fetchSelfOrderData, submitSelfOrder } from "./lib/api";
 import { formatRupiah, getTokenFromLocation } from "./lib/format";
 import { useCart } from "./lib/useCart";
 import MenuCard from "./components/MenuCard";
+import Logo from "./components/Logo";
 import CartSheet from "./components/CartSheet";
 import OrderSuccess from "./components/OrderSuccess";
 import { FullLoading, FullMessage } from "./components/States";
@@ -162,33 +163,55 @@ function SelfOrder({ token }) {
   const tableNumber = data.table.table_number;
 
   return (
-    <div className="mx-auto min-h-screen max-w-lg pb-28">
-      <header className="bg-primary px-5 pb-5 pt-6 text-white">
-        <p className="text-xs uppercase tracking-widest text-white/70">Selamat datang di</p>
-        <h1 className="text-xl font-bold">{data.outlet.name}</h1>
-        <span className="mt-3 inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-          Meja {tableNumber}
-        </span>
+    <div className="mx-auto min-h-screen max-w-lg overflow-x-clip pb-28">
+      {/* ============ HERO / HEADER ============ */}
+      <header className="bg-fern pt-safe relative overflow-hidden bg-gradient-to-b from-primary-dark via-primary to-primary text-white">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/5" />
+        <div className="pointer-events-none absolute -left-20 top-24 h-48 w-48 rounded-full bg-white/5" />
+
+        <div className="relative flex flex-col items-center px-5 pb-12 pt-8 text-center animate-fade-up">
+          <div className="rounded-full bg-white p-1 shadow-xl ring-4 ring-white/25">
+            <Logo size={104} eager />
+          </div>
+          <p className="mt-4 text-[11px] uppercase tracking-[.25em] text-white/70">Selamat datang di</p>
+          <h1 className="font-display mt-1 text-[28px] leading-tight">{data.outlet.name}</h1>
+          <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold backdrop-blur ring-1 ring-white/20">
+            <Armchair className="h-3.5 w-3.5" />
+            Meja {tableNumber}
+          </span>
+        </div>
       </header>
 
-      <div className="sticky top-0 z-30 bg-cream/95 px-4 pb-2 pt-3 backdrop-blur">
+      {/* ============ SEARCH + KATEGORI (menempel di atas saat scroll) ============ */}
+      <div className="sticky top-0 z-30 -mt-6 rounded-t-[28px] bg-cream/95 px-4 pb-2 pt-4 shadow-[0_-8px_20px_-12px_rgba(0,0,0,.25)] backdrop-blur">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari makanan atau minuman"
-            className="input !pl-10"
+            className="input !rounded-full !pl-10 !pr-10 shadow-soft"
           />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              aria-label="Hapus pencarian"
+              className="absolute right-2.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
         {!query && (
-          <div ref={tabsRef} className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4">
+          <div ref={tabsRef} className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
             {categories.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setTab(c.id)}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  tab === c.id ? "bg-primary text-white" : "bg-white text-gray-600 shadow-soft"
+                  tab === c.id
+                    ? "bg-primary text-white shadow-md shadow-primary/30"
+                    : "bg-white text-gray-600 shadow-soft ring-1 ring-black/[.04]"
                 }`}
               >
                 {c.name}
@@ -198,7 +221,7 @@ function SelfOrder({ token }) {
         )}
       </div>
 
-      <main className="space-y-3 px-4 pt-2">
+      <main className="space-y-3.5 px-4 pt-3">
         {visible.map((item) => (
           <MenuCard
             key={`${item.type}:${item.id}`}
@@ -214,19 +237,27 @@ function SelfOrder({ token }) {
         )}
       </main>
 
+      <footer className="mt-10 flex flex-col items-center gap-2 px-6 text-center">
+        <Logo size={44} className="opacity-70" />
+        <p className="text-[11px] uppercase tracking-[.2em] text-gray-400">One step closer to nature</p>
+      </footer>
+
       {cart.count > 0 && (
         <div className="pb-safe fixed inset-x-0 bottom-0 z-40 mx-auto max-w-lg px-4">
           <button
             onClick={() => setCartOpen(true)}
-            className="flex w-full items-center justify-between rounded-2xl bg-primary px-5 py-4 text-white shadow-lg active:scale-[.99]"
+            className="flex w-full animate-fade-up items-center justify-between rounded-full bg-gradient-to-r from-primary-dark to-primary py-3 pl-3 pr-5 text-white shadow-xl shadow-primary/40 active:scale-[.99]"
           >
-            <span className="flex items-center gap-2 text-sm font-semibold">
-              <span className="relative">
+            <span className="flex items-center gap-3 text-sm font-semibold">
+              <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
                 <ShoppingBag className="h-5 w-5" />
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white px-1 text-[11px] font-bold text-primary-dark">
+                  {cart.count}
+                </span>
               </span>
-              {cart.count} item
+              Lihat pesanan
             </span>
-            <span className="text-sm font-bold">Lihat pesanan · {formatRupiah(cart.total)}</span>
+            <span className="text-sm font-bold">{formatRupiah(cart.total)}</span>
           </button>
         </div>
       )}
