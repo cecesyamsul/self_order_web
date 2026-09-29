@@ -165,7 +165,11 @@ function SelfOrder({ token }) {
   return (
     <div className="mx-auto min-h-screen max-w-lg overflow-x-clip pb-28">
       {/* ============ HERO / HEADER ============ */}
-      <header className="bg-fern pt-safe relative overflow-hidden bg-gradient-to-b from-primary-dark via-primary to-primary text-white">
+      <header className="pt-safe relative overflow-hidden bg-primary-dark text-white">
+        {/* Gradasi dan pola dipisah jadi lapisan sendiri: keduanya memakai background-image,
+            kalau digabung di satu elemen yang satu akan menimpa yang lain. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary-dark via-primary to-primary" />
+        <div className="bg-fern pointer-events-none absolute inset-0" />
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/5" />
         <div className="pointer-events-none absolute -left-20 top-24 h-48 w-48 rounded-full bg-white/5" />
 
@@ -174,7 +178,7 @@ function SelfOrder({ token }) {
             <Logo size={104} eager />
           </div>
           <p className="mt-4 text-[11px] uppercase tracking-[.25em] text-white/70">Selamat datang di</p>
-          <h1 className="font-display mt-1 text-[28px] leading-tight">{data.outlet.name}</h1>
+          <h1 className="font-display mt-1 text-[28px] leading-tight text-white drop-shadow-[0_1px_2px_rgba(0,0,0,.25)]">{data.outlet.name}</h1>
           <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold backdrop-blur ring-1 ring-white/20">
             <Armchair className="h-3.5 w-3.5" />
             Meja {tableNumber}
